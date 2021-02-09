@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "author": "Mateusz Piórowski",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.ts",
+    "create": "db-migrate -m ../db/migrations create",
+    "migrate": "db-migrate up -m ../db/migrations",
+    "reset": "db-migrate -m ../db/migrations reset"
+  },
+  "dependencies": {
+    "db-migrate": "^0.11.12",
+    "db-migrate-pg": "^1.2.2"
+  }
+}
