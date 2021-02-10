@@ -1,11 +1,11 @@
 {
   "dev": {
     "driver": "pg",
-    "host": {"ENV": "SERVER_PGHOST"},
-    "user": {"ENV": "SERVER_PGUSER"},
-    "database": {"ENV": "SERVER_PGDATABASE"},
-    "password": {"ENV": "SERVER_PGPASSWORD"},
-    "port": {"ENV": "SERVER_PGPORT"}
+    "host": {"ENV": "PGHOST"},
+    "user": {"ENV": "PGUSER"},
+    "database": {"ENV": "PGDATABASE"},
+    "password": {"ENV": "PGPASSWORD"},
+    "port": {"ENV": "PGPORT"}
   },
   "sql-file": true
 }

@@ -1,7 +1,7 @@
 import express from "express";
 import { Pool, QueryResult } from "pg";
 
-type Users = {
+type User = {
   id: string;
   name: string;
   email: string;
@@ -14,12 +14,12 @@ export const usersRouter = express.Router().use(express.json());
 usersRouter.get("/api/users", async (req, res) => {
   const pool = new Pool();
   const client = await pool.connect();
-  let response: QueryResult<Users>;
+  let response: QueryResult<User[]>;
   try {
     await client.query("BEGIN");
     response = await client.query(`select * from users`);
     await client.query("COMMIT");
-    return res.send(JSON.stringify(response.rows[0]));
+    return res.send(JSON.stringify(response.rows || []));
   } catch (e) {
     await client.query("ROLLBACK");
     console.log(e);
@@ -34,7 +34,7 @@ usersRouter.get("/api/users", async (req, res) => {
 usersRouter.post("/api/users", async (req, res) => {
   const pool = new Pool();
   const client = await pool.connect();
-  let response: QueryResult<Users>;
+  let response: QueryResult<User>;
   try {
     await client.query("BEGIN");
     response = await client.query(`insert into users (name, email) values ('${req.body.name}', '${req.body.email}') returning *`);
