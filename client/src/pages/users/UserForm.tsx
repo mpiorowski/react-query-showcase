@@ -15,6 +15,9 @@ export const UserForm = () => {
   /**
    * Set initial data for user edit, then make an api call to check for correct data.
    * If no user selected, reset form
+   * typescript <1,2>:
+   * 1. What is returned
+   * 2. Error
    */
   const user = useQuery<User, Error>(["user", userId], () => getUserApi(userId as string), {
     initialData: initialUser as User,
@@ -24,7 +27,7 @@ export const UserForm = () => {
     userId ? form.setFieldsValue(user.data) : form.resetFields();
   }, [userId, user, form]);
 
-  // typescript
+  // typescript <1,2,3>:
   // 1. What is returned
   // 2. Error
   // 3. what is send
