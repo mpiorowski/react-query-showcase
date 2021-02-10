@@ -1,17 +1,37 @@
 import { Button, Form, Input } from "antd";
-import React from "react";
-import { useMutation, useQueryClient } from "react-query";
+import React, { useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useSelector } from "react-redux";
 import { User } from "./Users";
-import { addAllUsers } from "./usersApi";
+import { addUserApi, editUserApi, getUserApi } from "./usersApi";
+import { getUser } from "./userSlice";
 
 export const UserForm = () => {
-  const cache = useQueryClient();
+  const queryClient = useQueryClient();
+  const initialUser = useSelector(getUser);
+  const userId = initialUser?.id || null;
+  const [form] = Form.useForm();
+
+  /**
+   * Set initial data for user edit, then make an api call to check for correct data.
+   * If no user selected, reset form
+   */
+  const user = useQuery<User, Error>(["user", userId], () => getUserApi(userId as string), {
+    initialData: initialUser as User,
+    enabled: userId ? true : false,
+  });
+  useEffect(() => {
+    userId ? form.setFieldsValue(user.data) : form.resetFields();
+  }, [userId, user, form]);
+
   // typescript
   // 1. What is returned
   // 2. Error
   // 3. what is send
-  const addUser = useMutation<User, Error, User>((user) => addAllUsers(user));
+  const addUser = useMutation<User, Error, User>((user) => addUserApi(user));
+  const editUser = useMutation<User, Error, User>((user) => editUserApi(userId as string, user));
 
+  // Another way to use mutation
   // const addUser = useMutation<User, Error, User>(addAllUsers, {
   //   onMutate: user => {
   //     // A mutation is about to happen!
@@ -33,8 +53,16 @@ export const UserForm = () => {
   const onFinish = async (values: User) => {
     console.log("Success:", values);
     try {
-      const response = await addUser.mutateAsync(values);
-      cache.invalidateQueries('users');
+      let response: User;
+      if (userId) {
+        response = await editUser.mutateAsync(values);
+        queryClient.invalidateQueries("users");
+      } else {
+        response = await addUser.mutateAsync(values);
+        const previousUsers = queryClient.getQueryData<User[]>("users");
+        const newUsers = [response, ...(previousUsers || [])];
+        queryClient.setQueryData("users", newUsers);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -60,10 +88,10 @@ export const UserForm = () => {
       <Form
         {...layout}
         name="users"
-        initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         layout={"vertical"}
+        form={form}
       >
         <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please input your name!" }]}>
           <Input />

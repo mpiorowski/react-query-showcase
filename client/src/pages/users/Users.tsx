@@ -1,9 +1,11 @@
 import { Button, Drawer } from "antd";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
+import { useDispatch } from "react-redux";
 import { UserForm } from "./UserForm";
 import styles from "./Users.module.css";
-import { getAllUsers } from "./usersApi";
+import { getAllUsersApi } from "./usersApi";
+import { setUser } from "./userSlice";
 
 export type User = {
   id: string;
@@ -14,9 +16,10 @@ export type User = {
 };
 
 export const Users = () => {
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
 
-  const users = useQuery<User[], Error>("users", () => getAllUsers(), {
+  const users = useQuery<User[], Error>("users", () => getAllUsersApi(), {
     refetchInterval: 10000,
     refetchOnWindowFocus: false,
   });
@@ -24,19 +27,31 @@ export const Users = () => {
   if (users.isLoading) {
     return <div>Loading</div>;
   }
-  if (users.isError) {
-    return <div>{users.error.message}</div>;
-  }
   return (
     <>
+      {users.isError && <h5>{users.error.message}</h5>}
       <div className={styles.content}>
         {users.data?.map((user) => (
-          <li>
+          <li
+            key={user.id}
+            onClick={() => {
+              dispatch(setUser(user));
+              setVisible(true);
+            }}
+          >
             User: {user.name} | Email: {user.email}
           </li>
         ))}
       </div>
-      <Button type="primary" size="large" onClick={() => setVisible(true)} className={styles.button}>
+      <Button
+        type="primary"
+        size="large"
+        onClick={() => {
+          dispatch(setUser(null));
+          setVisible(true);
+        }}
+        className={styles.button}
+      >
         Add
       </Button>
       <Drawer
