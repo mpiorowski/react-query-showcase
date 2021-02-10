@@ -29,7 +29,9 @@ export const UserForm = () => {
   // 2. Error
   // 3. what is send
   const addUser = useMutation<User, Error, User>((user) => addUserApi(user));
-  const editUser = useMutation<User, Error, User>((user) => editUserApi(userId as string, user));
+  const editUser = useMutation<User, Error, { userId: string; user: User }>(({ userId, user }) =>
+    editUserApi(userId, user)
+  );
 
   // Another way to use mutation
   // const addUser = useMutation<User, Error, User>(addAllUsers, {
@@ -55,7 +57,7 @@ export const UserForm = () => {
     try {
       let response: User;
       if (userId) {
-        response = await editUser.mutateAsync(values);
+        response = await editUser.mutateAsync({ userId: userId, user: values });
         queryClient.invalidateQueries("users");
       } else {
         response = await addUser.mutateAsync(values);
