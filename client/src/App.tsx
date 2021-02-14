@@ -3,7 +3,7 @@ import { Counter } from "./pages/counter/Counter";
 import "./App.css";
 import { Layout, Menu } from "antd";
 import { Link, Route, Switch } from "react-router-dom";
-import { Users } from "./pages/users/Users";
+import { UsersList } from "./pages/users/UsersList";
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
       <div className="App-content">
         <Switch>
           <Route path="/users">
-            <Users />
+            <UsersList />
           </Route>
           <Route path="/" exact={true}>
             <Counter />

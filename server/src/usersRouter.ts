@@ -14,7 +14,7 @@ export const usersRouter = express.Router().use(express.json());
 usersRouter.get("/api/users", async (req, res) => {
   const pool = new Pool();
   const client = await pool.connect();
-  let response: QueryResult<User[]>;
+  let response: QueryResult<User>;
   try {
     await client.query("BEGIN");
     response = await client.query(`select * from users order by created desc`);
@@ -34,7 +34,7 @@ usersRouter.get("/api/users", async (req, res) => {
 usersRouter.get("/api/users/:userId", async (req, res) => {
   const pool = new Pool();
   const client = await pool.connect();
-  let response: QueryResult<User[]>;
+  let response: QueryResult<User>;
   try {
     await client.query("BEGIN");
     response = await client.query(`select * from users where id = ${req.params.userId}`);

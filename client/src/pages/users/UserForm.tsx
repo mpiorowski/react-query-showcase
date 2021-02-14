@@ -2,7 +2,7 @@ import { Button, Form, Input } from "antd";
 import React, { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
-import { User } from "./Users";
+import { User } from "./UsersList";
 import { addUserApi, editUserApi, getUserApi } from "./usersApi";
 import { getUser } from "./userSlice";
 

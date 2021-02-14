@@ -15,13 +15,13 @@ export type User = {
   updatedAt: Date;
 };
 
-export const Users = () => {
+export const UsersList = () => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
 
   const users = useQuery<User[], Error>("users", () => getAllUsersApi(), {
     refetchInterval: 10000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
 
   if (users.isLoading) {

@@ -17,8 +17,6 @@
 
 .App-content {
   min-height: calc(100vh - 64px);
-  display: grid;
-  grid-template-columns: 1fr 200px;
 }
 
 .App-link {

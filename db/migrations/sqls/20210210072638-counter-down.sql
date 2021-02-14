@@ -1,1 +1,1 @@
-DROP TABLE 'counter';
+DROP TABLE "counter";

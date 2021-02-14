@@ -5,6 +5,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morganBody from "morgan-body";
+import { counterRouter } from "./counterRouter";
 import { usersRouter } from "./usersRouter";
 
 const app = express();
@@ -19,6 +20,7 @@ morganBody(app);
 
 // routes
 app.use(usersRouter);
+app.use(counterRouter);
 
 // define a route handler for the default home page
 app.get("/", (req, res) => {
