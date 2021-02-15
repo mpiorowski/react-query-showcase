@@ -1,8 +1,42 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
-## Available Scripts
+# Development build
 
-In the project directory, you can run:
+## Prerequisites 
+
+node, npm, docker, docker-compose
+
+## Database
+
+```
+cd db && sh start.sh
+```
+## Server
+
+```
+cd server
+```
+Create config file
+```
+cp .env.dist .env
+```
+First, with running database, run migration:
+```
+npm run migrate
+
+# or
+
+yarn run migrate
+```
+Then run the api server
+```
+npm i && npm start
+
+# or
+
+yarn && yarn start
+```
+
 
 ### `yarn start`
 
