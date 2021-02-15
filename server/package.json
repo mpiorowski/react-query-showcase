@@ -6,9 +6,9 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon src/app.ts",
-    "create": "db-migrate -m ../db/migrations create",
-    "migrate": "db-migrate up -m ../db/migrations",
-    "reset": "db-migrate -m ../db/migrations reset"
+    "create": "db-migrate -m ./migrations create",
+    "migrate": "db-migrate up -m ./migrations",
+    "reset": "db-migrate -m ./migrations reset"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

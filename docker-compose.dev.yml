@@ -1,0 +1,50 @@
+version: "3.6"
+
+services:
+
+  query-db-dev:
+    container_name: query-db-dev
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: server
+      PGDATA: /data/pgdata
+    volumes:
+      - ./dev:/data/pgdata
+    ports:
+      - "5432:5432"
+
+  query-server-dev:
+    container_name: query-server-dev
+    build:
+      context: ./server
+      dockerfile: ../Dockerfile.dev
+    environment:
+      - "NODE_ENV=development"
+    volumes:
+      - ./server:/usr/src/app
+      - ./server/.env.docker:/usr/src/app/.env
+    ports:
+      - "9000:9000"
+    depends_on:
+      - query-db-dev
+    command: sh -c "echo 'starting server' && yarn && yarn run migrate && yarn start"
+
+  query-client-dev:
+    container_name: query-client-dev
+    build:
+      context: ./client
+      dockerfile: ../Dockerfile.dev
+    stdin_open: true
+    environment:
+      - "NODE_ENV=development"
+    volumes:
+      - ./client:/usr/src/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - query-db-dev
+    command: sh -c "echo 'starting client' && yarn && yarn run start"

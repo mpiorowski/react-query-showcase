@@ -47,5 +47,5 @@
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7"
   },
-  "proxy": "http://localhost:9000"
+  "proxy": "http://query-server-dev:9000"
 }

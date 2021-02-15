@@ -1,6 +1,15 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+# Deploy using docker-compose
+The simplest way, just run this two commands (only docker-compose is needed as prerequisites):
 
-# Development build
+```
+sed -i 's/localhost/query-server-dev/' ./client/package.json
+
+docker-compose -f docker-compose.dev.yml up
+```
+
+# Deploy using bash
+
+Each service will run in a seperate terminal
 
 ## Prerequisites 
 
