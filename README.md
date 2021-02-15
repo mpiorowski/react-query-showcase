@@ -13,7 +13,7 @@ Each service will run in a seperate terminal
 
 ## Prerequisites 
 
-node, npm, docker, docker-compose
+node, yarn / npm, docker, docker-compose
 
 ## Database
 
@@ -22,28 +22,27 @@ cd db && sh start.sh
 ```
 ## Server
 
-```
-cd server
-```
 First create config file
+
 ```
-cp .env.dist .env
+cd server && cp .env.dist .env
 ```
+
 Then, with running database, apply migration:
 ```
-npm run migrate
+yarn run migrate
 
 # or
 
-yarn run migrate
+npm run migrate
 ```
 Then run the api server
 ```
-npm i && npm start
+yarn && yarn start
 
 # or
 
-yarn && yarn start
+npm i && npm start
 ```
 ## Client
 ```
@@ -51,11 +50,11 @@ cd client
 ```
 Run the client app
 ```
-npm i && npm start
+yarn && yarn start
 
 # or
 
-yarn && yarn start
+npm i && npm start
 ```
 ## Access
 http://localhost:3000
