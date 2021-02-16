@@ -53,9 +53,9 @@ export function Counter() {
     }
   };
 
-  // if(counter.isLoading) {
-  //   return <div>LOADING</div>
-  // }
+  if(counter.isLoading) {
+    return <div>LOADING</div>
+  }
 
   return (
     <div className={styles.content}>

@@ -8,11 +8,17 @@ import { getAllUsersApi } from "./usersApi";
 import { setUser } from "./userSlice";
 
 export type User = {
-  id: string;
+  id?: string;
   name: string;
   email: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+const initialData = {
+  id: "1",
+  name: "mat",
+  email: "mat@gmail.com",
 };
 
 export const UsersList = () => {
@@ -20,8 +26,9 @@ export const UsersList = () => {
   const [visible, setVisible] = useState(false);
 
   const users = useQuery<User[], Error>("users", () => getAllUsersApi(), {
-    refetchInterval: 10000,
+    // refetchInterval: 10000,
     refetchOnWindowFocus: true,
+    // initialData: [{ ...initialData }],
   });
 
   if (users.isLoading) {
@@ -62,7 +69,7 @@ export const UsersList = () => {
         visible={visible}
         width={600}
       >
-        <UserForm />
+        <UserForm users={users.data}/>
       </Drawer>
     </>
   );

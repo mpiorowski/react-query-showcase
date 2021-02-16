@@ -6,7 +6,11 @@ import { User } from "./UsersList";
 import { addUserApi, editUserApi, getUserApi } from "./usersApi";
 import { getUser } from "./userSlice";
 
-export const UserForm = () => {
+type Props = {
+  users?: User[];
+};
+
+export const UserForm = ({ users }: Props) => {
   const queryClient = useQueryClient();
   const initialUser = useSelector(getUser);
   const userId = initialUser?.id || null;
@@ -60,11 +64,16 @@ export const UserForm = () => {
     try {
       let response: User;
       if (userId) {
-        response = await editUser.mutateAsync({ userId: userId, user: values });
+        // addUser.mutate({ userId: userId, user: values })
+        await editUser.mutateAsync({ userId: userId, user: values });
         queryClient.invalidateQueries("users");
+        queryClient.invalidateQueries(["user", userId]);
       } else {
         response = await addUser.mutateAsync(values);
-        const previousUsers = queryClient.getQueryData<User[]>("users");
+        queryClient.setQueryData(["user", userId], response);
+        
+        const previousUsers = users;
+        // const previousUsers = queryClient.getQueryData<User[]>("users");
         const newUsers = [response, ...(previousUsers || [])];
         queryClient.setQueryData("users", newUsers);
       }
